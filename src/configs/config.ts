@@ -31,13 +31,13 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       username: process.env.POSTGRES_USER || 'pg',
       password: process.env.POSTGRES_PASSWORD || 'pg',
       entities: [UserEntity],
-      migrations: [`apps/migrations/*.ts`],
+      migrations: [`${__dirname}/migrations/*.ts`],
       synchronize: false,
     }
   }
 
   createTypeOrmOptions(): TypeOrmModuleOptions {
-    const migrationOpts = process.env.NODE_ENV === 'production' ? { migrations: [`apps/migrations/*.js`] } : {}
+    const migrationOpts = process.env.NODE_ENV === 'production' ? { migrations: [`${__dirname}/migrations/*.js`] } : {}
 
     return {
       retryAttempts: 1,
@@ -46,5 +46,3 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
     }
   }
 }
-
-export default new DataSource(new TypeOrmConfigService(appEnv()).getPostgresOptions())
