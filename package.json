@@ -5,6 +5,7 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
+  "type": "commonjs",
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"apps/**/*.ts\" \"test/**/*.ts\"",
@@ -29,7 +30,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "dotenv": "^16.0.3",
-    "nanoid": "^4.0.2",
+    "nanoid": "^3.0.2",
     "pg": "^8.10.0",
     "postgres": "^3.3.4",
     "reflect-metadata": "^0.1.13",

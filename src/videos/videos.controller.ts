@@ -1,10 +1,11 @@
 import { Controller, Delete, Get, Post, Put, UseGuards } from '@nestjs/common'
-import { ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { AuthGuard } from '../auth/auth.guard'
 import { VideosService } from './videos.service'
 
 @ApiTags('Videos')
 @UseGuards(AuthGuard)
+@ApiBearerAuth()
 @Controller('videos')
 export class VideosController {
   constructor(private readonly service: VideosService) {}

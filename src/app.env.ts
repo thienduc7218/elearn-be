@@ -4,6 +4,7 @@ type EnvType = {
   port: number
   database: { host: string; port: number }
   inDev: boolean
+  jwtSecret: string
 }
 
 export const APP_ENV = 'app'
@@ -17,5 +18,6 @@ export const appEnv = registerAs(
       port: parseInt(process.env.DATABASE_PORT, 10) || 5432,
     },
     inDev: process.env.IN_DEV === 'true',
+    jwtSecret: process.env.JWT_SECRET || 'secret',
   }),
 )

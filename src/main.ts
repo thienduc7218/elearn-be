@@ -23,7 +23,7 @@ async function bootstrap() {
     }),
   )
 
-  const swgBuilder = new DocumentBuilder().setTitle('E-Learn API docs!').addBasicAuth()
+  const swgBuilder = new DocumentBuilder().setTitle('E-Learn API docs!').addBearerAuth()
   const document = SwaggerModule.createDocument(app, swgBuilder.build())
   SwaggerModule.setup('/swagger', app, document)
 
