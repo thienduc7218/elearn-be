@@ -1,5 +1,18 @@
-import { Controller, Delete, Get, Post, Put, UseGuards } from '@nestjs/common'
+import {
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Res,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common'
+import { FileInterceptor } from '@nestjs/platform-express'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
+import { Response } from 'express'
 import { AuthGuard } from '../auth/auth.guard'
 import { VideosService } from './videos.service'
 
@@ -16,8 +29,9 @@ export class VideosController {
   }
 
   @Post(':id/source')
-  uploadVideo() {
-    return this.service.uploadVideo()
+  @UseInterceptors(FileInterceptor('file'))
+  uploadVideo(@Param('id') id: string, @UploadedFile() file: any): Promise<{ url: string }> {
+    return this.service.uploadVideo(id, file)
   }
 
   @Post(':id/thumbnail')
@@ -26,13 +40,14 @@ export class VideosController {
   }
 
   @Get(':id')
-  retrieveVideoById() {
-    return this.service.retrieveVideoById()
+  @UseInterceptors(FileInterceptor('file'))
+  retrieveVideoById(@Param('id') id: string, @Res() res: Response): Promise<Buffer> {
+    return this.service.retrieveVideoById(id)
   }
 
   @Get(':id/status')
   getVideoStatus() {
-    return this.service.retrieveVideoById()
+    return this.service.getVideoStatus()
   }
 
   @Put('/:id')
