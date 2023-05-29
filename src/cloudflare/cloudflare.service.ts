@@ -1,11 +1,11 @@
-import { Inject, Injectable, InternalServerErrorException, OnModuleInit } from '@nestjs/common'
+import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common'
 import { ConfigType } from '@nestjs/config'
 import * as AWS from 'aws-sdk'
 import { appEnv } from 'src/app.env'
 import { Readable } from 'stream'
 
 @Injectable()
-export class CloudflareService implements OnModuleInit {
+export class CloudflareService {
   private readonly r2: AWS.S3
   constructor(@Inject(appEnv.KEY) private readonly env: ConfigType<typeof appEnv>) {
     this.r2 = new AWS.S3({
@@ -16,9 +16,6 @@ export class CloudflareService implements OnModuleInit {
         secretAccessKey: this.env.r2SecretKey,
       },
     })
-  }
-  async onModuleInit() {
-    console.log(this.r2)
   }
 
   async uploadVideo(id: string, file: any): Promise<string> {
