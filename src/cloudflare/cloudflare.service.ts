@@ -55,4 +55,8 @@ export class CloudflareService {
       throw new InternalServerErrorException(err)
     }
   }
+
+  async test() {
+    return
+  }
 }
