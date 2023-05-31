@@ -1,25 +1,13 @@
-import {
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  Put,
-  Res,
-  UploadedFile,
-  UseGuards,
-  UseInterceptors,
-} from '@nestjs/common'
+import { Controller, Delete, Get, Param, Post, Put, Res, UploadedFile, UseInterceptors } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { Response } from 'express'
 import { RolesEnum } from 'src/entities/user.entity'
-import { AuthGuard } from '../auth/auth.guard'
-import { Roles, RolesGuard } from '../auth/roles.guard'
+import { Roles } from '../auth/roles.guard'
 import { VideosService } from './videos.service'
 
 @ApiTags('Videos')
-@UseGuards(AuthGuard, RolesGuard)
+// @UseGuards(AuthGuard, RolesGuard)
 @ApiBearerAuth()
 @Controller('videos')
 export class VideosController {
@@ -46,8 +34,8 @@ export class VideosController {
   @Roles(RolesEnum.Admin)
   @Get(':id')
   @UseInterceptors(FileInterceptor('file'))
-  retrieveVideoById(@Param('id') id: string, @Res() res: Response): Promise<Buffer> {
-    return this.service.retrieveVideoById(id)
+  retrieveVideoById(@Param('id') id: string, @Res() res: Response) {
+    return this.service.retrieveVideoById(id, res)
   }
 
   @Get(':id/status')

@@ -1,6 +1,7 @@
 import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common'
 import { ConfigType } from '@nestjs/config'
 import * as AWS from 'aws-sdk'
+import { Response } from 'express'
 import { appEnv } from 'src/app.env'
 import { Readable } from 'stream'
 
@@ -39,17 +40,17 @@ export class CloudflareService {
     }
   }
 
-  async downloadVideo(id: string): Promise<Buffer> {
-    const command = {
-      Bucket: this.env.r2bucketName,
-      Key: id,
-    }
+  async downloadVideo(id: string, res: Response) {
+    const command = { Bucket: this.env.r2bucketName, Key: id }
 
     try {
-      const { Body } = await this.r2.getObject(command).promise()
-      console.log({ Body })
+      const stream = this.r2.getObject(command).createReadStream().pipe(res)
+      stream.on('error', error => {
+        console.error(error)
+        res.status(500).end()
+      })
 
-      return Body as Buffer
+      return stream
     } catch (err) {
       console.log(err)
       throw new InternalServerErrorException(err)
